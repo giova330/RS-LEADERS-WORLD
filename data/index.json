@@ -3,12 +3,30 @@
   "name": "España",
   "last_date": "2026-11-13",
   "qualifying": 0,
-  "generated_at": "2026-11-15T21:08:51Z"
+  "generated_at": "2026-11-15T21:20:05Z"
  },
  "us": {
   "name": "Estados Unidos",
   "last_date": "2026-11-13",
   "qualifying": 165,
-  "generated_at": "2026-11-15T21:08:51Z"
+  "generated_at": "2026-11-15T21:20:05Z"
+ },
+ "de": {
+  "name": "Alemania",
+  "last_date": "2026-11-13",
+  "qualifying": 5,
+  "generated_at": "2026-11-15T21:20:05Z"
+ },
+ "it": {
+  "name": "Italia",
+  "last_date": "2026-11-13",
+  "qualifying": 6,
+  "generated_at": "2026-11-15T21:20:05Z"
+ },
+ "fr": {
+  "name": "Francia",
+  "last_date": "2026-11-13",
+  "qualifying": 6,
+  "generated_at": "2026-11-15T21:20:05Z"
  }
 }
