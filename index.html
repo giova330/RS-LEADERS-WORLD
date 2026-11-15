@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1018">
+<meta name="description" content="Acciones de cualquier país con nuevos máximos de fuerza relativa a 250 sesiones frente a su índice de referencia.">
+<title>RS Leaders World · Consola de mercado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1018; --surface:#111a28; --surface-2:#16223a; --line:#223049; --line-soft:#1a2639;
+  --text:#e3eaf5; --muted:#8394ad; --accent:#5aa9ff; --pos:#3ddc97; --warn:#f5b94a; --neg:#ff7a8a;
+  --font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--font);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1360px;margin:0 auto;padding:28px 20px 56px}
+h1{font-size:34px;line-height:1.1;margin:0 0 8px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:20px;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
+h3{font-size:16px;margin:28px 0 6px;font-weight:600}
+p{margin:0}
+.lede{color:var(--muted);max-width:76ch}
+.muted{color:var(--muted)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+.top{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.picker{display:flex;flex-direction:column;gap:6px;min-width:260px}
+.picker label{font-size:13px;color:var(--muted)}
+select,input[type=search],input[type=number]{
+  background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:8px;
+  padding:9px 12px;font:inherit;min-width:0;width:100%}
+select{cursor:pointer}
+select:hover,input:hover{border-color:#2f4467}
+.picker select{font-size:17px;font-weight:600;padding:11px 12px}
+
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:32px}
+.stat{background:var(--surface);padding:14px 16px}
+.stat .k{font-size:13px;color:var(--muted)}
+.stat .v{font-size:22px;font-weight:600;margin:2px 0}
+.stat .s{font-size:12.5px;color:var(--muted)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;margin-bottom:32px}
+.sectors{margin-top:14px;display:flex;flex-direction:column;gap:3px}
+.srow{display:grid;grid-template-columns:56px 1fr 34px;align-items:center;gap:10px;font-size:12.5px}
+.sdate{color:var(--muted)}
+.sbar{display:flex;height:16px;border-radius:3px;overflow:hidden;min-width:3px;background:var(--surface-2)}
+.seg{display:block;min-width:2px;border-right:1px solid var(--surface)}
+.stotal{text-align:right;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:3px 11px 3px 8px;font:inherit;font-size:12.5px;cursor:pointer}
+.chip:hover{border-color:#2f4467}
+.chip[aria-pressed=true]{background:var(--surface-2);border-color:var(--accent)}
+.dot{width:9px;height:9px;border-radius:50%}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:14px 0 12px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button.btn{background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font:inherit;font-weight:500;cursor:pointer}
+button.btn:hover{border-color:var(--accent)}
+button.btn.primary{background:var(--accent);border-color:var(--accent);color:#06101f;font-weight:600}
+.asof{font-size:13px;color:var(--muted)}
+.filters{display:grid;grid-template-columns:2fr 1.4fr repeat(4,1fr) auto;gap:10px;align-items:end;margin-bottom:14px}
+.filters .f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.filters label{font-size:12.5px;color:var(--muted)}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 12px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line-soft)}
+th.r,td.r{text-align:right}
+thead th{position:sticky;top:0;background:var(--surface-2);font-weight:600;font-size:13px;color:#b7c4d8;cursor:pointer;user-select:none;border-bottom:1px solid var(--line)}
+thead th:hover{color:var(--text)}
+thead th .ar{display:inline-block;width:12px;color:var(--accent)}
+tbody tr:hover td{background:#142033}
+td.name{max-width:260px;overflow:hidden;text-overflow:ellipsis}
+td.sec{max-width:200px;overflow:hidden;text-overflow:ellipsis;color:#b7c4d8}
+.tk{font-weight:600}
+.ex{color:var(--muted);font-size:12px;margin-left:6px;font-weight:400}
+.pos{color:var(--pos)} .warn{color:var(--warn)}
+.empty{padding:36px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--text);margin-bottom:4px;font-size:16px}
+code{background:var(--surface-2);padding:1px 6px;border-radius:4px;font-size:13px}
+
+.notes p{color:#b7c4d8;max-width:92ch;margin-bottom:10px}
+.foot{margin-top:28px;font-size:13px;color:var(--muted);max-width:92ch}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--surface-2);border:1px solid var(--accent);color:var(--text);padding:9px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .15s}
+.toast.on{opacity:1}
+
+@media (max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){
+  h1{font-size:28px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:repeat(2,1fr)}
+  .picker{width:100%}
+}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>RS Leaders World</h1>
+      <p class="lede" id="lede">Elige un país para ver sus acciones con nuevos máximos de fuerza relativa a 250 sesiones frente a su índice de referencia.</p>
+    </div>
+    <div class="picker">
+      <label for="country">País</label>
+      <select id="country" aria-label="País"></select>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Resumen">
+    <div class="stat"><div class="k">Último día de mercado</div><div class="v" id="st-date">—</div><div class="s" id="st-date-s">Sin datos</div></div>
+    <div class="stat"><div class="k">Tickers que califican</div><div class="v" id="st-count">—</div><div class="s">Rupturas recientes de RS</div></div>
+    <div class="stat"><div class="k">Lookback</div><div class="v" id="st-look">250 sesiones</div><div class="s">Observaciones previas de RS</div></div>
+    <div class="stat"><div class="k">Ventana de señal</div><div class="v" id="st-win">10 sesiones</div><div class="s">Últimas sesiones completadas</div></div>
+    <div class="stat"><div class="k">Benchmark</div><div class="v" id="st-bench">—</div><div class="s" id="st-bench-s">Índice de referencia del país</div></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-sec">
+    <h2 id="h-sec">Composición de la lista RS · rotación sectorial</h2>
+    <p class="muted">Recuento diario de acciones en la lista RS, por sector. La longitud de la barra es el tamaño total de la lista; los segmentos, la participación de cada sector. Pulsa un sector para filtrar la tabla.</p>
+    <div class="sectors" id="sectors"><p class="muted">Cargando distribución sectorial…</p></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section aria-labelledby="h-rs">
+    <h2 id="h-rs">Líderes de fuerza relativa</h2>
+    <p class="muted">Acciones a vigilar por posibles entradas en retroceso. Pulsa el título de una columna para ordenar.</p>
+
+    <div class="toolbar">
+      <div class="btns">
+        <button class="btn primary" id="b-copy">Copiar tickers</button>
+        <button class="btn" id="b-csv">Descargar CSV</button>
+        <button class="btn" id="b-refresh">Actualizar datos</button>
+      </div>
+      <div class="asof" id="asof">Datos a: sin cargar</div>
+    </div>
+
+    <div class="filters">
+      <div class="f"><label for="f-q">Buscar</label><input id="f-q" type="search" placeholder="Ticker o empresa" autocomplete="off"></div>
+      <div class="f"><label for="f-sec">Sector</label><select id="f-sec"><option value="">Todos</option></select></div>
+      <div class="f"><label for="f-price" id="l-price">Precio mín.</label><input id="f-price" type="number" min="0" step="any"></div>
+      <div class="f"><label for="f-value">Vol. medio mín. (M$ eq.)</label><input id="f-value" type="number" min="0" step="any"></div>
+      <div class="f"><label for="f-vol">Acc. medias mín. (10d)</label><input id="f-vol" type="number" min="0" step="any"></div>
+      <div class="f"><label for="f-adr">ADR% mín.</label><input id="f-adr" type="number" min="0" step="any"></div>
+      <button class="btn" id="b-reset" title="Volver a los filtros por defecto del país">Restablecer</button>
+    </div>
+
+    <div class="tablewrap">
+      <table id="tbl"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table>
+      <div class="empty" id="empty" hidden></div>
+    </div>
+  </section>
+
+  <section class="notes" aria-labelledby="h-met">
+    <h3 id="h-met">Metodología de la lista</h3>
+    <div id="method"></div>
+    <h3>Datos y cobertura</h3>
+    <div id="coverage"></div>
+    <p class="foot">Actualización diaria · GitHub Actions. Solo para investigación. La fuerza relativa es un cociente de precios, no una recomendación. Los datos pueden llegar con retraso o incompletos. Confirma el gráfico y la liquidez antes de actuar.</p>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // Debe coincidir con los códigos de scanner.py
+  const COUNTRIES = [
+    {code:"us", name:"Estados Unidos", flag:"🇺🇸", region:"América"},
+    {code:"ca", name:"Canadá", flag:"🇨🇦", region:"América"},
+    {code:"mx", name:"México", flag:"🇲🇽", region:"América"},
+    {code:"br", name:"Brasil", flag:"🇧🇷", region:"América"},
+    {code:"es", name:"España", flag:"🇪🇸", region:"Europa"},
+    {code:"de", name:"Alemania", flag:"🇩🇪", region:"Europa"},
+    {code:"fr", name:"Francia", flag:"🇫🇷", region:"Europa"},
+    {code:"it", name:"Italia", flag:"🇮🇹", region:"Europa"},
+    {code:"uk", name:"Reino Unido", flag:"🇬🇧", region:"Europa"},
+    {code:"nl", name:"Países Bajos", flag:"🇳🇱", region:"Europa"},
+    {code:"be", name:"Bélgica", flag:"🇧🇪", region:"Europa"},
+    {code:"pt", name:"Portugal", flag:"🇵🇹", region:"Europa"},
+    {code:"ch", name:"Suiza", flag:"🇨🇭", region:"Europa"},
+    {code:"se", name:"Suecia", flag:"🇸🇪", region:"Europa"},
+    {code:"dk", name:"Dinamarca", flag:"🇩🇰", region:"Europa"},
+    {code:"no", name:"Noruega", flag:"🇳🇴", region:"Europa"},
+    {code:"fi", name:"Finlandia", flag:"🇫🇮", region:"Europa"},
+    {code:"jp", name:"Japón", flag:"🇯🇵", region:"Asia-Pacífico"},
+    {code:"hk", name:"Hong Kong", flag:"🇭🇰", region:"Asia-Pacífico"},
+    {code:"cn", name:"China", flag:"🇨🇳", region:"Asia-Pacífico"},
+    {code:"kr", name:"Corea del Sur", flag:"🇰🇷", region:"Asia-Pacífico"},
+    {code:"tw", name:"Taiwán", flag:"🇹🇼", region:"Asia-Pacífico"},
+    {code:"in", name:"India", flag:"🇮🇳", region:"Asia-Pacífico"},
+    {code:"au", name:"Australia", flag:"🇦🇺", region:"Asia-Pacífico"},
+    {code:"sg", name:"Singapur", flag:"🇸🇬", region:"Asia-Pacífico"}
+  ];
+  const PALETTE = ["#5aa9ff","#3ddc97","#f5b94a","#ff7a8a","#b58cff","#4fd6e8","#ff9f5a","#9bd45a","#e86fd0","#7f90ff","#c4a46a","#6fcfb0"];
+
+  const COLS = [
+    {k:"t",        label:"Ticker",              type:"str"},
+    {k:"name",     label:"Empresa",             type:"str"},
+    {k:"sector",   label:"Sector",              type:"str"},
+    {k:"float",    label:"Float",               type:"num", r:1},
+    {k:"price",    label:"Precio",              type:"num", r:1},
+    {k:"adr",      label:"ADR%",                type:"num", r:1},
+    {k:"vol10",    label:"Acc. medias (10d)",   type:"num", r:1},
+    {k:"value_usd",label:"Vol. medio $ (30d)",  type:"num", r:1},
+    {k:"ago",      label:"Sesiones atrás",      type:"num", r:1},
+    {k:"rs_ratio", label:"RS vs máx. 250s",     type:"num", r:1},
+    {k:"above",    label:"Sobre máx. previo",   type:"num", r:1}
+  ];
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const nf0 = new Intl.NumberFormat("es-ES", {maximumFractionDigits:0});
+  const nf2 = new Intl.NumberFormat("es-ES", {minimumFractionDigits:2, maximumFractionDigits:2});
+
+  const state = {code:null, data:null, sortKey:"ago", sortDir:1, sector:"", q:"", f:{price:0, value:0, vol:0, adr:0}};
+
+  // ---------- formato ----------
+  function fmtBig(v){
+    if (v == null) return "—";
+    const a = Math.abs(v);
+    if (a >= 1e9) return nf2.format(v/1e9) + " B";
+    if (a >= 1e6) return nf2.format(v/1e6) + " M";
+    if (a >= 1e3) return nf2.format(v/1e3) + " K";
+    return nf0.format(v);
+  }
+  function fmtUsd(v){ return v == null ? "—" : "$" + fmtBig(v); }
+  function fmtPrice(v){ return v == null ? "—" : (Math.abs(v) >= 1000 ? nf0.format(v) : nf2.format(v)); }
+  function fmtPct(v){ return v == null ? "—" : nf2.format(v) + "%"; }
+  function fmtDate(s){ const [y,m,d] = s.split("-"); return d + "/" + m; }
+  function fmtDateLong(s){
+    const d = new Date(s + "T00:00:00");
+    return d.toLocaleDateString("es-ES", {weekday:"short", day:"numeric", month:"short", year:"numeric"});
+  }
+  function toast(msg){
+    const t = $("toast"); t.textContent = msg; t.classList.add("on");
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("on"), 1800);
+  }
+
+  // ---------- selector de país ----------
+  function buildCountrySelect(){
+    const sel = $("country");
+    const regions = [...new Set(COUNTRIES.map(c => c.region))];
+    sel.innerHTML = regions.map(r =>
+      `<optgroup label="${esc(r)}">` +
+      COUNTRIES.filter(c => c.region === r).map(c => `<option value="${c.code}">${c.flag} ${esc(c.name)}</option>`).join("") +
+      `</optgroup>`).join("");
+    sel.addEventListener("change", () => loadCountry(sel.value));
+  }
+  function initialCountry(){
+    const h = location.hash.replace("#", "").toLowerCase();
+    if (COUNTRIES.some(c => c.code === h)) return h;
+    try { const s = localStorage.getItem("rs-country"); if (COUNTRIES.some(c => c.code === s)) return s; } catch(e) {}
+    return "us";
+  }
+
+  // ---------- carga ----------
+  async function loadCountry(code, bust){
+    state.code = code;
+    $("country").value = code;
+    history.replaceState(null, "", "#" + code);
+    try { localStorage.setItem("rs-country", code); } catch(e) {}
+    const c = COUNTRIES.find(x => x.code === code);
+    $("lede").textContent = `Cargando ${c.name}…`;
+    try {
+      const r = await fetch(`data/${code}.json${bust ? "?t=" + Date.now() : ""}`, {cache: bust ? "no-store" : "default"});
+      if (!r.ok) throw new Error(r.status);
+      state.data = await r.json();
+    } catch (e) {
+      state.data = null;
+      renderMissing(c);
+      return;
+    }
+    state.sector = ""; state.q = ""; $("f-q").value = "";
+    resetFilters();
+    renderAll();
+  }
+
+  function renderMissing(c){
+    $("lede").textContent = `${c.flag} ${c.name}: todavía no hay datos publicados.`;
+    $("st-date").textContent = "—"; $("st-date-s").textContent = "Sin datos";
+    $("st-count").textContent = "—"; $("st-bench").textContent = "—";
+    $("sectors").innerHTML = `<p class="muted">Sin distribución sectorial.</p>`; $("legend").innerHTML = "";
+    $("tbody").innerHTML = "";
+    const e = $("empty"); e.hidden = false;
+    e.innerHTML = `<strong>No hay datos para ${esc(c.name)}</strong>Ejecuta <code>python scanner.py --countries ${c.code}</code> o lanza el workflow de GitHub Actions. Si abres este archivo en local, sírvelo con <code>python -m http.server</code>.`;
+    $("asof").textContent = "Datos a: sin cargar";
+    $("method").innerHTML = ""; $("coverage").innerHTML = "";
+  }
+
+  function resetFilters(){
+    const d = state.data.meta.defaults, m = state.data.meta;
+    state.f = {price:d.price, value:d.value_usd/1e6, vol:d.vol10, adr:d.adr};
+    $("f-price").value = d.price; $("f-value").value = d.value_usd/1e6; $("f-vol").value = d.vol10; $("f-adr").value = d.adr;
+    $("l-price").textContent = `Precio mín. (${m.currency})`;
+    $("f-price").min = m.floor.price; $("f-value").min = m.floor.value_usd/1e6; $("f-vol").min = m.floor.vol10; $("f-adr").min = m.floor.adr;
+  }
+
+  // ---------- filtrado y orden ----------
+  function visibleRows(){
+    const q = state.q.trim().toLowerCase(), f = state.f;
+    const rows = state.data.rows.filter(r =>
+      (!state.sector || r.sector === state.sector) &&
+      (!q || r.sym.toLowerCase().includes(q) || r.name.toLowerCase().includes(q)) &&
+      (r.price ?? 0) >= f.price && (r.value_usd ?? 0) >= f.value*1e6 &&
+      (r.vol10 ?? 0) >= f.vol && (r.adr ?? 0) >= f.adr);
+    const k = state.sortKey, dir = state.sortDir, col = COLS.find(c => c.k === k);
+    rows.sort((a, b) => {
+      const x = a[k], y = b[k];
+      if (x == null && y == null) return 0;
+      if (x == null) return 1;
+      if (y == null) return -1;
+      const c = col.type === "str" ? String(x).localeCompare(String(y), "es") : x - y;
+      return c * dir || (a.ago - b.ago) || ((b.above ?? 0) - (a.above ?? 0));
+    });
+    return rows;
+  }
+
+  // ---------- render ----------
+  function renderAll(){
+    const {meta} = state.data, c = COUNTRIES.find(x => x.code === state.code);
+    $("lede").textContent = `Acciones de ${c.name} con nuevos máximos de fuerza relativa a ${meta.lookback} sesiones frente a ${meta.benchmark_name}. Vigila estos candidatos por posibles retrocesos a soportes o medias móviles.`;
+    $("st-date").textContent = fmtDate(meta.last_date) + "/" + meta.last_date.slice(0,4);
+    $("st-date-s").textContent = fmtDateLong(meta.last_date);
+    $("st-look").textContent = `${meta.lookback} sesiones`;
+    $("st-win").textContent = `${meta.window} sesiones`;
+    $("st-bench").textContent = meta.benchmark_name;
+    $("st-bench-s").textContent = `Ticker ${meta.benchmark} · ${meta.currency}`;
+    $("asof").textContent = "Datos a: " + new Date(meta.generated_at).toLocaleString("es-ES", {dateStyle:"medium", timeStyle:"short"});
+    renderSectors(); renderHead(); renderBody(); renderNotes();
+  }
+
+  function sectorOrder(){
+    const tot = {};
+    (state.data.history || []).forEach(d => Object.entries(d.sectors).forEach(([s, n]) => tot[s] = (tot[s] || 0) + n));
+    state.data.rows.forEach(r => { if (!(r.sector in tot)) tot[r.sector] = 0; });
+    return Object.keys(tot).sort((a, b) => tot[b] - tot[a] || a.localeCompare(b));
+  }
+  const colorOf = (s, order) => PALETTE[order.indexOf(s) % PALETTE.length];
+
+  function renderSectors(){
+    const h = state.data.history || [], order = sectorOrder();
+    if (!h.length) { $("sectors").innerHTML = `<p class="muted">Sin historial.</p>`; $("legend").innerHTML = ""; return; }
+    const max = Math.max(...h.map(d => d.total), 1);
+    $("sectors").innerHTML = h.slice().reverse().map(d => {
+      const segs = order.filter(s => d.sectors[s]).map(s =>
+        `<span class="seg" style="flex:${d.sectors[s]};background:${colorOf(s, order)}" title="${esc(s)}: ${d.sectors[s]}"></span>`).join("");
+      return `<div class="srow"><span class="sdate">${fmtDate(d.date)}</span><div class="sbar" style="width:${Math.max(d.total/max*100, 0.5)}%">${segs}</div><span class="stotal">${d.total}</span></div>`;
+    }).join("");
+    $("legend").innerHTML = order.map(s =>
+      `<button class="chip" type="button" data-s="${esc(s)}" aria-pressed="${state.sector === s}"><span class="dot" style="background:${colorOf(s, order)}"></span>${esc(s)}</button>`).join("");
+    const sel = $("f-sec");
+    sel.innerHTML = `<option value="">Todos</option>` + order.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+    sel.value = state.sector;
+  }
+
+  function renderHead(){
+    $("thead").innerHTML = COLS.map(c => {
+      const on = state.sortKey === c.k;
+      return `<th class="${c.r ? "r" : ""}" data-k="${c.k}" scope="col" aria-sort="${on ? (state.sortDir === 1 ? "ascending" : "descending") : "none"}" tabindex="0">${esc(c.label)} <span class="ar">${on ? (state.sortDir === 1 ? "↑" : "↓") : "↕"}</span></th>`;
+    }).join("");
+  }
+
+  function renderBody(){
+    const rows = visibleRows(), m = state.data.meta;
+    $("st-count").textContent = nf0.format(rows.length);
+    $("legend").querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === state.sector)));
+    const e = $("empty");
+    if (!rows.length) {
+      $("tbody").innerHTML = "";
+      e.hidden = false;
+      e.innerHTML = `<strong>Sin filas</strong>Ninguna acción cumple los filtros actuales. Pulsa «Restablecer» o rebaja los umbrales.`;
+      return;
+    }
+    e.hidden = true;
+    $("tbody").innerHTML = rows.map(r => {
+      const url = "https://www.tradingview.com/chart/?symbol=" + encodeURIComponent(r.t);
+      const ago = r.ago === 0 ? `<span class="pos">hoy</span>` : r.ago;
+      const ratio = r.rs_ratio == null ? "—" : `<span class="${r.rs_ratio >= 0.995 ? "pos" : r.rs_ratio < 0.95 ? "warn" : ""}">${nf2.format(r.rs_ratio*100)}%</span>`;
+      return `<tr>
+        <td><a class="tk" href="${url}" target="_blank" rel="noopener">${esc(r.sym)}</a>${m.code === "us" ? "" : `<span class="ex">${esc(r.ex)}</span>`}</td>
+        <td class="name" title="${esc(r.name)}">${esc(r.name)}</td>
+        <td class="sec" title="${esc(r.sector)}">${esc(r.sector)}</td>
+        <td class="r">${r.float == null ? "—" : fmtBig(r.float)}</td>
+        <td class="r">${fmtPrice(r.price)}</td>
+        <td class="r">${fmtPct(r.adr)}</td>
+        <td class="r">${fmtBig(r.vol10)}</td>
+        <td class="r">${fmtUsd(r.value_usd)}</td>
+        <td class="r">${ago}</td>
+        <td class="r">${ratio}</td>
+        <td class="r">${r.above == null ? "—" : "+" + nf2.format(r.above) + "%"}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  function renderNotes(){
+    const m = state.data.meta, d = m.defaults, f = m.floor;
+    const loc = n => `${fmtPrice(n)} ${m.currency}`;
+    $("method").innerHTML = `
+      <p><strong>RS</strong> = cierre diario de la acción ÷ cierre diario de ${esc(m.benchmark_name)} (${esc(m.benchmark)}).</p>
+      <p>Una acción califica cuando su RS es estrictamente mayor que el valor más alto de RS de las ${m.lookback} sesiones de mercado anteriores. La sesión actual se excluye de esa comparación. Aparece en la lista si tuvo al menos una ruptura en las últimas ${m.window} sesiones completadas. Esto identifica líderes de fuerza relativa a vigilar; no es una señal de entrada.</p>
+      <p>Filtros por defecto de este país: precio superior a ${loc(d.price)}; volumen medio en dólares (30 días) superior a ${fmtUsd(d.value_usd)} equivalentes; volumen medio de ${fmtBig(d.vol10)} acciones en 10 días; ADR% de ${m.adr_period} periodos superior a ${d.adr}%. Puedes rebajarlos en los campos de filtro hasta ${loc(f.price)}, ${fmtUsd(f.value_usd)}, ${fmtBig(f.vol10)} acciones y ${f.adr}% de ADR; por debajo de eso el escáner ya no guarda la acción. El volumen en dólares se calcula como la media simple de 30 días del cierre multiplicada por la media de 30 días del volumen, convertida con 1 ${esc(m.currency)} ≈ ${m.usd_per_unit.toPrecision(3)} USD.</p>
+      <p><strong>RS vs máx. 250s</strong> es el RS actual dividido entre el máximo de RS de las últimas ${m.lookback} sesiones (100% = en máximos). <strong>Sobre máx. previo</strong> es cuánto superó el RS a su máximo anterior el día de la ruptura más reciente. El gráfico sectorial cuenta todas las acciones que superan los umbrales mínimos del escáner, sin los filtros que cambies en la tabla.</p>`;
+    $("coverage").innerHTML = `
+      <p>El universo (acciones comunes y certificados de depósito) sale del screener público de TradingView para el mercado de ${esc(m.name)}: ${nf0.format(m.universe)} valores tras el filtro de precio y volumen mínimos, de los que ${nf0.format(m.scanned)} tenían serie histórica utilizable. Los cierres diarios de las acciones y del benchmark vienen de Yahoo Finance mediante yfinance, ajustados por splits y dividendos, y se alinean con las fechas exactas del benchmark antes de calcular la RS. Son interfaces públicas, no un servicio institucional de datos de mercado. Las acciones recién cotizadas sin historial suficiente no pueden calificar. Usa la lista para encontrar candidatos y valora después retrocesos a soportes o medias móviles, acción del precio, volumen y relación riesgo/beneficio en el gráfico antes de plantear una entrada.</p>`;
+  }
+
+  // ---------- acciones ----------
+  function csvCell(v){ v = v == null ? "" : String(v); return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; }
+  function downloadCsv(){
+    const rows = visibleRows(), m = state.data.meta;
+    const head = ["ticker","empresa","sector","float","precio_"+m.currency,"adr_pct","acc_medias_10d","vol_medio_usd_30d","sesiones_atras","rs_vs_max_250","sobre_max_previo_pct"];
+    const lines = [head.join(",")].concat(rows.map(r => [r.t, r.name, r.sector, r.float, r.price, r.adr, r.vol10, r.value_usd, r.ago, r.rs_ratio, r.above].map(csvCell).join(",")));
+    const blob = new Blob(["\ufeff" + lines.join("\n")], {type:"text/csv;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = `rs-leaders-${state.code}-${m.last_date}.csv`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast(`CSV con ${rows.length} filas`);
+  }
+  async function copyTickers(){
+    const rows = visibleRows();
+    if (!rows.length) return toast("No hay tickers que copiar");
+    const text = rows.map(r => r.t).join(",");
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) {
+      const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch(_) {} ta.remove();
+    }
+    toast(`${rows.length} tickers copiados (formato BOLSA:TICKER)`);
+  }
+
+  // ---------- eventos ----------
+  function bind(){
+    $("thead").addEventListener("click", e => {
+      const th = e.target.closest("th"); if (!th) return;
+      const k = th.dataset.k;
+      if (state.sortKey === k) state.sortDir *= -1;
+      else { state.sortKey = k; state.sortDir = COLS.find(c => c.k === k).type === "str" ? 1 : (k === "ago" ? 1 : -1); }
+      renderHead(); renderBody();
+    });
+    $("thead").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.target.click(); } });
+    $("legend").addEventListener("click", e => {
+      const b = e.target.closest(".chip"); if (!b) return;
+      state.sector = state.sector === b.dataset.s ? "" : b.dataset.s;
+      $("f-sec").value = state.sector; renderBody();
+    });
+    $("f-sec").addEventListener("change", e => { state.sector = e.target.value; renderBody(); });
+    $("f-q").addEventListener("input", e => { state.q = e.target.value; renderBody(); });
+    const num = (id, key) => $(id).addEventListener("input", e => { state.f[key] = parseFloat(e.target.value) || 0; renderBody(); });
+    num("f-price", "price"); num("f-value", "value"); num("f-vol", "vol"); num("f-adr", "adr");
+    $("b-reset").addEventListener("click", () => { state.sector = ""; state.q = ""; $("f-q").value = ""; $("f-sec").value = ""; resetFilters(); renderBody(); });
+    $("b-copy").addEventListener("click", () => state.data && copyTickers());
+    $("b-csv").addEventListener("click", () => state.data && downloadCsv());
+    $("b-refresh").addEventListener("click", async () => { await loadCountry(state.code, true); if (state.data) toast("Datos actualizados"); });
+    window.addEventListener("hashchange", () => {
+      const h = location.hash.replace("#", "").toLowerCase();
+      if (h !== state.code && COUNTRIES.some(c => c.code === h)) loadCountry(h);
+    });
+  }
+
+  buildCountrySelect();
+  bind();
+  loadCountry(initialCountry());
+})();
+</script>
+</body>
+</html>
