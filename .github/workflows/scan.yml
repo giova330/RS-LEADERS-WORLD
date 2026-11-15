@@ -1,0 +1,49 @@
+name: Escáner RS Leaders
+
+on:
+  schedule:
+    - cron: "30 23 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      countries:
+        description: "Códigos de país separados por coma (vacío = todos)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rs-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar escáner
+        run: python scanner.py --countries "${{ github.event.inputs.countries }}"
+
+      - name: Publicar datos
+        run: |
+          git config user.name "rs-leaders-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+          else
+            git commit -m "data: $(date -u +%F)"
+            git pull --rebase
+            git push
+          fi
