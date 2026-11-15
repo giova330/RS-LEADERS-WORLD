@@ -1,0 +1,14 @@
+{
+ "es": {
+  "name": "España",
+  "last_date": "2026-11-13",
+  "qualifying": 0,
+  "generated_at": "2026-11-15T21:08:51Z"
+ },
+ "us": {
+  "name": "Estados Unidos",
+  "last_date": "2026-11-13",
+  "qualifying": 165,
+  "generated_at": "2026-11-15T21:08:51Z"
+ }
+}
