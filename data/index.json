@@ -1,152 +1,152 @@
 {
  "es": {
   "name": "España",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 0,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "us": {
   "name": "Estados Unidos",
-  "last_date": "2026-11-19",
-  "qualifying": 140,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-20",
+  "qualifying": 150,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "de": {
   "name": "Alemania",
-  "last_date": "2026-11-18",
-  "qualifying": 8,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 7,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "it": {
   "name": "Italia",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 7,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "fr": {
   "name": "Francia",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 5,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "ca": {
   "name": "Canadá",
-  "last_date": "2026-11-19",
-  "qualifying": 27,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-20",
+  "qualifying": 29,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "mx": {
   "name": "México",
-  "last_date": "2026-11-19",
+  "last_date": "2026-11-20",
   "qualifying": 2,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "br": {
   "name": "Brasil",
   "last_date": "2026-11-19",
   "qualifying": 18,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "uk": {
   "name": "Reino Unido",
-  "last_date": "2026-11-18",
-  "qualifying": 26,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 25,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "nl": {
   "name": "Países Bajos",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 3,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "be": {
   "name": "Bélgica",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 0,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "pt": {
   "name": "Portugal",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 3,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "ch": {
   "name": "Suiza",
-  "last_date": "2026-11-18",
-  "qualifying": 2,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 4,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "se": {
   "name": "Suecia",
-  "last_date": "2026-11-18",
-  "qualifying": 14,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 15,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "dk": {
   "name": "Dinamarca",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 2,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "no": {
   "name": "Noruega",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 2,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "fi": {
   "name": "Finlandia",
-  "last_date": "2026-11-18",
-  "qualifying": 2,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 1,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "jp": {
   "name": "Japón",
-  "last_date": "2026-11-18",
-  "qualifying": 186,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 179,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "hk": {
   "name": "Hong Kong",
-  "last_date": "2026-11-18",
-  "qualifying": 32,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 36,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "cn": {
   "name": "China",
-  "last_date": "2026-11-18",
-  "qualifying": 179,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 176,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "kr": {
   "name": "Corea del Sur",
-  "last_date": "2026-11-18",
-  "qualifying": 32,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 33,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "tw": {
   "name": "Taiwán",
-  "last_date": "2026-11-18",
-  "qualifying": 36,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 35,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "in": {
   "name": "India",
-  "last_date": "2026-11-18",
-  "qualifying": 45,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-19",
+  "qualifying": 39,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "au": {
   "name": "Australia",
-  "last_date": "2026-11-18",
-  "qualifying": 9,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "last_date": "2026-11-20",
+  "qualifying": 12,
+  "generated_at": "2026-11-21T00:09:05Z"
  },
  "sg": {
   "name": "Singapur",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "qualifying": 0,
-  "generated_at": "2026-11-20T00:04:20Z"
+  "generated_at": "2026-11-21T00:09:05Z"
  }
 }
